@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import AddInUI from './AddInUI';
@@ -36,6 +37,7 @@ const GeotabCustomPage = ({ api }) => {
 // Simplified Geotab add-in initialization
 window.geotab.addin.myReactAddIn = () => ({
     initialize(api, state, callback) {
+        console.log('initialized');
         
         
         ReactDOM.createRoot(document.querySelector('#root')).render(
@@ -46,5 +48,13 @@ window.geotab.addin.myReactAddIn = () => ({
         );
         
         callback();
+    },
+    focus(api,state){
+      console.log('user focused on addin');
+      
+    },
+    blur(api,state){
+      console.log('user navigated away');
+      
     }
 });
