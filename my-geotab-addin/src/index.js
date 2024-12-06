@@ -1,16 +1,20 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import AddInUI from './AddInUI';
+import ApiContext from './GeotabContext';
+
 
 // Simplified main component
-const GeotabCustomPage = ({ api }) => {
+const GeotabCustomPage = () => {
     const [devices, setDevices] = useState([]);
+
+    const mygApi=useContext(ApiContext);
 
     useEffect(() => {
         const loadDevices = async () => {
             try {
-                const results = await api.call('Get', {
+                const results = await mygApi.call('Get', {
                     typeName: 'Device',
                     resultsLimit: 10
                 });
@@ -21,7 +25,7 @@ const GeotabCustomPage = ({ api }) => {
         };
 
         loadDevices();
-    }, [api]);
+    }, [mygApi]);
 
     return (
         <div>
@@ -42,8 +46,11 @@ window.geotab.addin.myReactAddIn = () => ({
         
         ReactDOM.createRoot(document.querySelector('#root')).render(
             <>
+            <ApiContext.Provider value = {api}>
+
             <AddInUI />
-            <GeotabCustomPage api={api} />
+            <GeotabCustomPage />
+            </ApiContext.Provider>
             </>
         );
         
